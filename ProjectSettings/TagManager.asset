@@ -9,6 +9,8 @@ TagManager:
   - Tower Location
   - Tower
   - Road
+  - Gate
+  - Castle
   layers:
   - Default
   - TransparentFX
