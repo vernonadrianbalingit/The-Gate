@@ -11,6 +11,7 @@ TagManager:
   - Road
   - Gate
   - Castle
+  - Turret
   layers:
   - Default
   - TransparentFX
@@ -18,9 +19,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Projectile
+  - Player
+  - Turret
   - 
   - 
   - 
