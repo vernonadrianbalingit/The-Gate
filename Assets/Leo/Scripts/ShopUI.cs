@@ -44,6 +44,8 @@ public class ShopUI : MonoBehaviour
         panelShop.gameObject.SetActive(isOpen);
     }
 
+    
+    
     public void TryBuyItem(ShopItem item)
     {
         if (GameCurrency.Instance == null)
@@ -62,4 +64,5 @@ public class ShopUI : MonoBehaviour
             Debug.Log("Not enough money!");
         }
     }
+    
 }
