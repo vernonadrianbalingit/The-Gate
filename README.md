@@ -1,12 +1,11 @@
 # The Gate!
 
-## Name of Group Members:
+## Group Members
 
 - Josue Favela-Pacheco
 - Romel Aleman
 - Leo Findley
 - Adrian Balingit
-
 
 ## Description
 
