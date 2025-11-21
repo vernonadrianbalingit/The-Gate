@@ -15,13 +15,13 @@ A first person tower defense game where you're a single guard with access to a s
 ## Goals for each Member
 
 # Josue
-- Turret interactions and damage handler for NPCs. Assuring the turrets function as intended such as locking onto enemies and projectile collision with enemies. Handling damage to NPCs and death queues. Animations of turrents and enemy deaths.
+Turret interactions and damage handler for NPCs. Assuring the turrets function as intended such as locking onto enemies and projectile collision with enemies. Handling damage to NPCs and death queues. Animations of turrents and enemy deaths.
 
 # Romel
-- Map design and object interactions. Creating layout of maps and providing sections for path of enemies, spawn locations, tower destinations and turret placement. Lock on for turret placement to dedicated sections. General visual aesthetics.
+Map design and object interactions. Creating layout of maps and providing sections for path of enemies, spawn locations, tower destinations and turret placement. Lock on for turret placement to dedicated sections. General visual aesthetics.
 
 # Leo
-- UI and Resource handling. Main menu interactions and in-game menu for turrets and their costs. Resource management when purchasing turrets or replacing turrets such as availability and restrctions of turret options based on available resources.
+UI and Resource handling. Main menu interactions and in-game menu for turrets and their costs. Resource management when purchasing turrets or replacing turrets such as availability and restrctions of turret options based on available resources.
 
 # Adrian
-- Player controls and tower POV swapping. Handling swapping between tower locations and areas within the map. Handling camera operations and smooth transitions between multitude of tower locations.
+Player controls and tower POV swapping. Handling swapping between tower locations and areas within the map. Handling camera operations and smooth transitions between multitude of tower locations.
