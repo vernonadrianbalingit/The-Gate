@@ -4,15 +4,24 @@ using UnityEngine.UI;
 public class ShopUI : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private RectTransform panelShop;     // Panel_Shop
+    [SerializeField] private RectTransform panelShop;     // Panel_Shop (this object)
     [SerializeField] private Button toggleButton;         // Button_ToggleShop
-    [SerializeField] private Transform itemsParent;       // Content (inside ScrollView)
+    [SerializeField] private Transform itemsParent;       // Content of ScrollView
     [SerializeField] private ShopSlotUI shopSlotPrefab;   // ShopSlot prefab
 
     [Header("Items")]
     [SerializeField] private ShopItem[] shopItems;
 
-    private bool isOpen = true;
+    [Header("Options")]
+    [SerializeField] private bool startOpen = true;       // whether the shop starts visible
+
+    private bool isOpen;
+
+    private void Awake()
+    {
+        if (panelShop == null)
+            panelShop = GetComponent<RectTransform>();
+    }
 
     private void Start()
     {
@@ -23,15 +32,20 @@ public class ShopUI : MonoBehaviour
             slot.Initialize(item, this);
         }
 
+        // Hook up button
         if (toggleButton != null)
         {
             toggleButton.onClick.AddListener(ToggleShop);
         }
+
+        // Set initial state
+        isOpen = startOpen;
+        UpdatePanelVisibility();
     }
 
     private void Update()
     {
-        // Optional: toggle shop with Tab key
+        // Tab to toggle
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleShop();
@@ -41,11 +55,24 @@ public class ShopUI : MonoBehaviour
     public void ToggleShop()
     {
         isOpen = !isOpen;
-        panelShop.gameObject.SetActive(isOpen);
+        UpdatePanelVisibility();
     }
 
-    
-    
+    private void UpdatePanelVisibility()
+    {
+        if (panelShop == null) return;
+
+        // Hide by scaling X to 0 instead of disabling the GameObject
+        if (isOpen)
+        {
+            panelShop.localScale = Vector3.one;                // (1,1,1)
+        }
+        else
+        {
+            panelShop.localScale = new Vector3(0f, 1f, 1f);    // squish it flat on X
+        }
+    }
+
     public void TryBuyItem(ShopItem item)
     {
         if (GameCurrency.Instance == null)
@@ -57,12 +84,11 @@ public class ShopUI : MonoBehaviour
         if (GameCurrency.Instance.SpendMoney(item.price))
         {
             Debug.Log($"Bought {item.itemName} for {item.price}");
-            // TODO: call your placement logic here later
+            // later: spawn or place your tower here
         }
         else
         {
             Debug.Log("Not enough money!");
         }
     }
-    
 }
