@@ -212,9 +212,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turretHead: {fileID: 1189679217}
   firePoint: {fileID: 1189679217}
-  projectilePrefab: {fileID: 5484455119184285686, guid: 3a86b64a8613bf6429ae0fbe673b6804, type: 3}
+  projectilePrefab: {fileID: 8331059043775293050, guid: 1cc07c64345c988448e99ec90b93ec6d, type: 3}
   rotationSpeed: 5
-  fireRate: 0.5
+  fireRate: 0.4
   detectionRange: 10
   projectileDamage: 10
   ownerTag: Turret
