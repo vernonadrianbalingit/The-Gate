@@ -12,6 +12,7 @@ TagManager:
   - Gate
   - Castle
   - Turret
+  - Stand
   layers:
   - Default
   - TransparentFX

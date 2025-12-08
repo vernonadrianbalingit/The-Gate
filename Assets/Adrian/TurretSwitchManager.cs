@@ -19,6 +19,9 @@ public class TurretSwitchManager : MonoBehaviour
     private Camera mainCamera; // Camera used for raycasting when not in a turret
     private ClickableTurret hoveredTurret = null;
     private bool temporarilyUnlocked = false; // Track if cursor was temporarily unlocked
+    private bool turretFunctionsEnabled = false; // Track if turret functions are currently enabled
+
+    public GameObject TurretManager; // Turret manager for turret placements reference
 
     void Start()
     {
@@ -314,7 +317,7 @@ public class TurretSwitchManager : MonoBehaviour
     {
         if (currentControlledTurret != null && Input.GetKeyDown(exitTurretKey))
         {
-            ExitTurret();
+            ToggleTurretFunctions();
         }
 
         // Re-lock cursor after a short delay if temporarily unlocked (to allow clicking)
@@ -341,6 +344,7 @@ public class TurretSwitchManager : MonoBehaviour
         if (currentControlledTurret != null)
         {
             currentControlledTurret.ActivateControl();
+            turretFunctionsEnabled = true;
             
             // Update main camera reference to the turret's camera
             Camera turretCam = currentControlledTurret.GetCamera();
@@ -359,6 +363,67 @@ public class TurretSwitchManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Toggles turret functions on/off
+    /// </summary>
+    private void ToggleTurretFunctions()
+    {
+        if (currentControlledTurret != null)
+        {
+            turretFunctionsEnabled = !turretFunctionsEnabled;
+            
+            if (turretFunctionsEnabled)
+            {
+                // Disable Grabber script when turret functions are enabled
+                if (TurretManager != null)
+                {
+                    Grabber grabber = TurretManager.GetComponent<Grabber>();
+                    if (grabber != null)
+                    {
+                        grabber.enabled = false;
+                        if (showDebugLogs)
+                            Debug.Log("TurretSwitchManager: Grabber script disabled");
+                    }
+                }
+                
+                // Re-enable turret functions
+                currentControlledTurret.ActivateControl();
+                if (showDebugLogs)
+                    Debug.Log("TurretSwitchManager: Turret functions enabled");
+            }
+            else
+            {
+                // Disable turret functions but keep camera enabled
+                currentControlledTurret.DeactivateControl();
+                
+                // Re-enable the camera so it stays active
+                Camera turretCam = currentControlledTurret.GetCamera();
+                if (turretCam != null)
+                {
+                    turretCam.enabled = true;
+                }
+                
+                // Enable Grabber script when turret functions are disabled
+                if (TurretManager != null)
+                {
+                    Grabber grabber = TurretManager.GetComponent<Grabber>();
+                    if (grabber != null)
+                    {
+                        grabber.enabled = true;
+                        if (showDebugLogs)
+                            Debug.Log("TurretSwitchManager: Grabber script enabled");
+                    }
+                }
+                
+                // Unlock cursor
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                if (showDebugLogs)
+                    Debug.Log("TurretSwitchManager: Turret functions disabled (camera still active)");
+            }
+        }
+    }
+
+    /// <summary>
     /// Exits the current turret control
     /// </summary>
     public void ExitTurret()
@@ -366,81 +431,8 @@ public class TurretSwitchManager : MonoBehaviour
         if (currentControlledTurret != null)
         {
             currentControlledTurret.DeactivateControl();
-            
-            // Find a camera to use for raycasting and make sure at least one camera is active
-            Camera[] cameras = FindObjectsOfType<Camera>(true);
-            Camera fallbackCamera = null;
-            
-            foreach (Camera cam in cameras)
-            {
-                if (cam != currentControlledTurret.GetCamera())
-                {
-                    // Try to find the main scene camera first
-                    if (cam.tag == "MainCamera" || cam.name.Contains("Main Camera"))
-                    {
-                        cam.gameObject.SetActive(true);
-                        cam.enabled = true;
-                        mainCamera = cam;
-                        fallbackCamera = cam;
-                        break;
-                    }
-                    else if (fallbackCamera == null && cam.gameObject.activeInHierarchy)
-                    {
-                        fallbackCamera = cam;
-                    }
-                }
-            }
-            
-            // If no main camera found, use fallback or create one
-            if (mainCamera == null)
-            {
-                if (fallbackCamera != null)
-                {
-                    fallbackCamera.gameObject.SetActive(true);
-                    fallbackCamera.enabled = true;
-                    mainCamera = fallbackCamera;
-                }
-                else
-                {
-                    // Last resort - re-enable the first camera we find
-                    foreach (Camera cam in cameras)
-                    {
-                        if (cam != currentControlledTurret.GetCamera())
-                        {
-                            cam.gameObject.SetActive(true);
-                            cam.enabled = true;
-                            mainCamera = cam;
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            // Make sure the main camera has Audio Listener enabled
-            if (mainCamera != null)
-            {
-                AudioListener audioListener = mainCamera.GetComponent<AudioListener>();
-                if (audioListener == null)
-                {
-                    audioListener = mainCamera.gameObject.AddComponent<AudioListener>();
-                }
-                audioListener.enabled = true;
-                
-                // Disable Audio Listeners on all other cameras
-                foreach (Camera cam in cameras)
-                {
-                    if (cam != mainCamera)
-                    {
-                        AudioListener otherListener = cam.GetComponent<AudioListener>();
-                        if (otherListener != null)
-                        {
-                            otherListener.enabled = false;
-                        }
-                    }
-                }
-            }
-            
             currentControlledTurret = null;
+            turretFunctionsEnabled = false;
         }
 
         // Unlock cursor
