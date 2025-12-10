@@ -16,6 +16,8 @@ public class FollowPath : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        wall = GameObject.FindWithTag("Wall");
+
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         if (agent == null)
         {

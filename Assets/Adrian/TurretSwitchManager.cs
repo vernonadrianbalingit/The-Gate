@@ -93,6 +93,12 @@ public class TurretSwitchManager : MonoBehaviour
     /// </summary>
     private void HandleTurretSwitching()
     {
+        // Don't allow switching when turret functions are disabled
+        if (currentControlledTurret != null && !turretFunctionsEnabled)
+        {
+            return;
+        }
+        
         // Determine which mouse button to use
         bool shouldCheckClick = false;
 
@@ -215,6 +221,17 @@ public class TurretSwitchManager : MonoBehaviour
     /// </summary>
     private void HandleHoverHighlight()
     {
+        // Don't allow highlighting when turret functions are disabled
+        if (currentControlledTurret != null && !turretFunctionsEnabled)
+        {
+            if (hoveredTurret != null)
+            {
+                hoveredTurret.RemoveHighlight();
+                hoveredTurret = null;
+            }
+            return;
+        }
+        
         // Always show highlights - even when controlling a turret (so you can see which turret to switch to)
         // Only hide highlights if we're using left-click switching with cursor unlock (Tab method)
         if (currentControlledTurret != null && !temporarilyUnlocked && !useRightClickToSwitch)

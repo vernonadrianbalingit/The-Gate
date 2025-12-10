@@ -13,11 +13,14 @@ TagManager:
   - Castle
   - Turret
   - Stand
+  - LandSpawner
+  - AirSpawner
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walk
   - Water
   - UI
   - Projectile
