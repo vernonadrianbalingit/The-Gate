@@ -27,7 +27,13 @@ public class Grabber : MonoBehaviour
                 grabbed = hit.collider.gameObject;
                 if (GetGrandestParent(GetClosestStand(grabbed)) == GetGrandestParent(GetCurrentCamera().gameObject))
                 {
-                Cursor.visible = false;
+                    Cursor.visible = false;
+                    StandInUse standInUse = GetClosestStand(grabbed).GetComponent<StandInUse>();
+
+                    if (standInUse != null)
+                    {
+                        standInUse.SetInUse(false);
+                    }
                 }
                 else
                 {
@@ -93,6 +99,20 @@ public class Grabber : MonoBehaviour
     {
         GameObject StandSection = GetGrandestParent(stand);
         GameObject CameraSection = GetGrandestParent(GetCurrentCamera().gameObject);
+
+        StandInUse standInUse = stand.GetComponent<StandInUse>();
+        
+        if (standInUse != null && standInUse.IsInUse())
+        {
+            return false;
+        }
+        else
+        {
+            if (standInUse != null)
+            {
+                standInUse.SetInUse(true);
+            }
+        }
 
         return StandSection == CameraSection;
 
