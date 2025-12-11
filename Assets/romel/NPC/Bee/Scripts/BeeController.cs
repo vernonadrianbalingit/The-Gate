@@ -24,9 +24,10 @@ public class BeeController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (target != null && Vector3.Distance(transform.position, target.position) >= 5f)
+        if (target != null && Vector3.Distance(transform.position, target.position + Vector3.up * 5f) >= 5f)
         {
-            Vector3 direction = (target.position - transform.position).normalized;
+            Vector3 targetPosition = target.position + Vector3.up * 5f;
+            Vector3 direction = (targetPosition - transform.position).normalized;
             transform.position += direction * Time.fixedDeltaTime * 2f; // Move towards the target
 
             animator.SetBool("Fly Forward", true);
@@ -36,7 +37,7 @@ public class BeeController : MonoBehaviour
             animator.SetBool("Fly Forward", false);
         }
 
-        if (Vector3.Distance(transform.position, target.position) < 5f)
+        if (Vector3.Distance(transform.position, target.position + Vector3.up * 5f) < 5f)
         {
             // Attack logic here
             animator.SetBool("Sting Attack", true);
@@ -56,7 +57,8 @@ public class BeeController : MonoBehaviour
         // constantly look at target
         if (target != null)
         {
-            Vector3 direction = (target.position - transform.position).normalized;
+            Vector3 targetPosition = target.position + Vector3.up * 5f;
+            Vector3 direction = (targetPosition - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }

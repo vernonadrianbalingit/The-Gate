@@ -14,6 +14,7 @@ public class ShopUI : MonoBehaviour
 
     [Header("Options")]
     [SerializeField] private bool startOpen = true;       // whether the shop starts visible
+    [SerializeField] private GameObject grabberScript;       // Reference to the Grabber script
 
     private bool isOpen;
 
@@ -85,6 +86,7 @@ public class ShopUI : MonoBehaviour
         {
             Debug.Log($"Bought {item.itemName} for {item.price}");
             // later: spawn or place your tower here
+            grabberScript.GetComponent<Grabber>().SpawnPrefabAtCursor(item.turretPrefab);
         }
         else
         {

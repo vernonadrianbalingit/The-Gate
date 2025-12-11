@@ -321,7 +321,7 @@ MonoBehaviour:
   lookXLimit: 45
   rotatingHead: {fileID: 2004926210355051183}
   muzzle: {fileID: 544738443696155688}
-  projectilePrefab: {fileID: 1100460523079060, guid: 4b9cb3248af14bc4fa03beaaede19356, type: 3}
+  projectilePrefab: {fileID: 8331059043775293050, guid: 1cc07c64345c988448e99ec90b93ec6d, type: 3}
   fireRate: 8
   projectileDamage: 10
   maxRange: 1000

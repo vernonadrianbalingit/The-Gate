@@ -23,6 +23,7 @@ public class Grabber : MonoBehaviour
 
             if (hit.collider != null && grabbed == null && hit.collider.gameObject.CompareTag("Turret"))
             {
+                Debug.Log("Grabbed Turret");
                 grabbed = hit.collider.gameObject;
                 if (GetGrandestParent(GetClosestStand(grabbed)) == GetGrandestParent(GetCurrentCamera().gameObject))
                 {
@@ -105,5 +106,32 @@ public class Grabber : MonoBehaviour
             current = current.parent;
         }
         return current.gameObject;
+    }
+
+    /// <summary>
+    /// Spawns a prefab at the mouse cursor position and allows it to be grabbed
+    /// </summary>
+    /// <param name="prefab">The prefab to spawn</param>
+    public void SpawnPrefabAtCursor(GameObject prefab)
+    {
+        if (prefab == null)
+        {
+            Debug.LogWarning("Grabber: Cannot spawn null prefab");
+            return;
+        }
+
+        // Get the mouse position in world space
+        Camera cam = GetCurrentCamera();
+        Vector3 ScreenMousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane + 10f);
+        Vector3 worldMousePos = cam.ScreenToWorldPoint(ScreenMousePos);
+
+        // Spawn the prefab at the cursor position
+        GameObject spawnedObject = Instantiate(prefab, new Vector3(worldMousePos.x, 3.88f, worldMousePos.z), Quaternion.identity);
+
+        // Automatically grab the spawned object
+        grabbed = spawnedObject;
+        Cursor.visible = false;
+
+        Debug.Log($"Spawned {prefab.name} at cursor position");
     }
 }
