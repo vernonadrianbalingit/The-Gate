@@ -702,7 +702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2830189, g: 0.2274831, b: 0.2274831, a: 0.392}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -745,15 +745,19 @@ MonoBehaviour:
   shopSlotPrefab: {fileID: 1474781275657718861, guid: cf351f61ce632894c8b2cc2fe575a860, type: 3}
   shopItems:
   - itemName: a
-    icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    icon: {fileID: 21300000, guid: 6d8ebaa594244c049a8d1862154a25ff, type: 3}
     price: 1
+    turretPrefab: {fileID: 0}
   - itemName: b
-    icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    icon: {fileID: 21300000, guid: 6d8ebaa594244c049a8d1862154a25ff, type: 3}
     price: 2
+    turretPrefab: {fileID: 0}
   - itemName: 2
-    icon: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    icon: {fileID: 21300000, guid: 6d8ebaa594244c049a8d1862154a25ff, type: 3}
     price: 3
+    turretPrefab: {fileID: 0}
   startOpen: 1
+  grabberScript: {fileID: 0}
 --- !u!1 &753530923
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +916,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 753530924}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99996704
+  m_Size: 0.9999719
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -930,7 +934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1025,7 +1029,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0062994254}
+  m_AnchoredPosition: {x: 0, y: 0.00015544535}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1406099804
