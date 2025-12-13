@@ -13,7 +13,7 @@ public class GainMoney : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         int enemyCount = FindAllEnemies();
         if (enemyCount == 0)
@@ -26,6 +26,8 @@ public class GainMoney : MonoBehaviour
     public int FindAllEnemies()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        Debug.Log("Enemies Remaining: " + enemies.Length);
         return enemies.Length;
+        
     }
 }
