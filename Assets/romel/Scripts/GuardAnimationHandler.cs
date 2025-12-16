@@ -11,29 +11,52 @@ public class GuardAnimationHandler : MonoBehaviour
 {
 
     private Animator animator;
+    private bool isLocked = false;
+    private Vector3 lockedPosition;
+    
     public Transform target;
-    public float attackDistance = 2.0f;
+
+    private FollowPath followPathScript;
+    public float attackDistance = 20.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         target = GameObject.FindWithTag("Wall").transform;
         animator = GetComponent<Animator>();
+        followPathScript = GetComponent<FollowPath>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        // Lock position if triggered by wall
+        if (isLocked)
+        {
+            transform.position = lockedPosition;
+            return;
+        }
+        
         float distanceToTarget = Vector3.Distance(transform.position, target.position);
         if (distanceToTarget <= attackDistance)
         {
             animator.SetBool("Walk Forward", false);
             animator.SetBool("Attack", true);
+            
+            transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 0, transform.rotation.eulerAngles.z);
         }
         else
         {
             animator.SetBool("Walk Forward", true);
             animator.SetBool("Attack", false);
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Wall"))
+        {
+            Destroy(gameObject);
         }
     }
 }
