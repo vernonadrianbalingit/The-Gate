@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class GainMoney : MonoBehaviour
 {
-    private int currentRound = 0;
+    private int currentRound = 1;
+    private bool enemiesSpawned = false;
     private GameCurrency gameCurrency;
-    private float timer = 0f;
-    private float delay = 5f;
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -18,26 +16,34 @@ public class GainMoney : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        timer += Time.fixedDeltaTime;
-        
-        // Wait 5 seconds before checking for enemies
-        if (timer < delay)
-        {
-            return;
-        }
-        
         int enemyCount = FindAllEnemies();
-        if (enemyCount == 0 && currentRound == 0)
+        
+        // Enemies are present, mark that the wave has started
+        if (enemyCount > 0)
         {
-            currentRound++;
+            if (!enemiesSpawned)
+            {
+                enemiesSpawned = true;
+                Debug.Log("Enemies detected. Round " + currentRound + " in progress.");
+            }
         }
-        else if (enemyCount == 0 && currentRound > 1){
-            currentRound++;
-            gameCurrency.AddMoney(currentRound);
-        }
-        else if (enemyCount == 0 && currentRound == 1)
+        // All enemies are dead and a wave was active
+        else if (enemyCount == 0 && enemiesSpawned)
         {
+            // Only give money after round 1
+            if (currentRound > 0)
+            {
+                int moneyToAdd = currentRound + 2;
+                gameCurrency.AddMoney(moneyToAdd);
+                Debug.Log("Added " + moneyToAdd + " currency for completing round " + currentRound);
+            }
+            else
+            {
+                Debug.Log("Round " + currentRound + " completed. No money for first round.");
+            }
+            
             currentRound++;
+            enemiesSpawned = false; // Reset for next wave
         }
     }
 
@@ -46,5 +52,6 @@ public class GainMoney : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         Debug.Log("Enemies Remaining: " + enemies.Length);
         return enemies.Length;
+        
     }
 }

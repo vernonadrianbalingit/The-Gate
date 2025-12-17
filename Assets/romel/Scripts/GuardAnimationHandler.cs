@@ -13,6 +13,7 @@ public class GuardAnimationHandler : MonoBehaviour
     private Animator animator;
     private bool isLocked = false;
     private Vector3 lockedPosition;
+    private AudioManager audioManager;
     
     public Transform target;
 
@@ -25,6 +26,8 @@ public class GuardAnimationHandler : MonoBehaviour
         target = GameObject.FindWithTag("Wall").transform;
         animator = GetComponent<Animator>();
         followPathScript = GetComponent<FollowPath>();
+        audioManager = FindObjectOfType<AudioManager>();
+        //audioManager.Play("MonsterWalk");
     }
 
     // Update is called once per frame

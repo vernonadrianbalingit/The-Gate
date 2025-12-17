@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class SpawnLogic : MonoBehaviour
 {
-    private int currentRound = 1;
+    public int currentRound = 1;
     private GameObject[] spawnPoints;
     private bool isSpawning = false; // Track if currently spawning
 
     public GameObject WolfPrefab;
     public GameObject BeePrefab;
     public GameObject GuardPrefab;
-    public float spawnDelay = 0.5f; // Delay between each spawn in seconds
+    public float spawnDelay = 2f; // Delay between each spawn in seconds
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +55,7 @@ public class SpawnLogic : MonoBehaviour
     private IEnumerator SpawnCreaturesForCurrentRound()
     {
         isSpawning = true;
-        int creaturesToSpawn = currentRound + 30; // increase the number of creatures each round
+        int creaturesToSpawn = currentRound * 2; // increase the number of creatures each round
         for (int i = 0; i < creaturesToSpawn; i++)
         {
             SpawnCreatureAtRandomPoint();

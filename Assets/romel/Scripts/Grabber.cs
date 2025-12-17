@@ -54,6 +54,80 @@ public class Grabber : MonoBehaviour
                 }
             }
         }
+        
+        // Tab key to destroy grabbed turret
+        if (Input.GetKeyDown(KeyCode.Tab) && grabbed != null)
+        {
+            Debug.Log("Destroyed turret in hand (Tab): " + grabbed.name);
+            Destroy(grabbed);
+            grabbed = null;
+            Cursor.visible = true;
+        }
+        
+        // Right-click handler
+        if (Input.GetMouseButtonDown(1))
+        {
+            // If holding a turret, destroy it
+            if (grabbed != null)
+            {
+                Debug.Log("Destroyed turret in hand: " + grabbed.name);
+                Destroy(grabbed);
+                grabbed = null;
+                Cursor.visible = true;
+            }
+            // Otherwise, try to destroy a placed turret
+            else
+            {
+                Debug.Log("Right-click on placed turret - checking raycast...");
+                RaycastHit hit = CastRay();
+                
+                if (hit.collider != null)
+                {
+                    Debug.Log($"Raycast hit: {hit.collider.gameObject.name}, Tag: {hit.collider.gameObject.tag}");
+                    
+                    if (hit.collider.gameObject.CompareTag("Turret"))
+                    {
+                        GameObject turretToDestroy = hit.collider.gameObject;
+                        GameObject standParent = GetGrandestParent(GetClosestStand(turretToDestroy));
+                        GameObject cameraParent = GetGrandestParent(GetCurrentCamera().gameObject);
+                        
+                        Debug.Log($"Turret parent: {standParent.name}, Camera parent: {cameraParent.name}, Same: {standParent == cameraParent}");
+                        
+                        // Check if turret is in the same section as the camera
+                        if (standParent == cameraParent)
+                        {
+                            // Free up the stand before destroying
+                            GameObject closestStand = GetClosestStand(turretToDestroy);
+                            if (closestStand != null)
+                            {
+                                StandInUse standInUse = closestStand.GetComponent<StandInUse>();
+                                if (standInUse != null)
+                                {
+                                    standInUse.SetInUse(false);
+                                    Debug.Log("Freed up stand: " + closestStand.name);
+                                }
+                            }
+                            
+                            Debug.Log("Destroyed turret: " + turretToDestroy.name);
+                            Destroy(turretToDestroy);
+                        }
+                        else
+                        {
+                            Debug.Log("Turret not in same section as camera - cannot destroy");
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Hit object is not tagged as Turret");
+                    }
+                }
+                else
+                {
+                    Debug.Log("Raycast hit nothing");
+                }
+            }
+        }
+        
         if (grabbed != null)
         {   
             GameObject closestStand = GetClosestStand(grabbed);
