@@ -11,7 +11,7 @@ public class OnCityEnter : MonoBehaviour
             ScrCityHealth cityHealth = FindObjectOfType<ScrCityHealth>();
             if (cityHealth != null)
             {
-                cityHealth.cityHealth -= 100; // Decrease city health by 10 on collision
+                cityHealth.cityHealth -= 10; // Decrease city health by 10 on collision
                 Debug.Log("City Health: " + cityHealth.cityHealth);
             }
             Destroy(collision.gameObject); // Destroy the enemy after it hits the city

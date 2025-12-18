@@ -64,7 +64,7 @@ public class WolfAnimationController : MonoBehaviour
         {
             Destroy(gameObject);
             ScrCityHealth CityHealth = CityHealthObject.GetComponent<ScrCityHealth>();
-            CityHealth.cityHealth -= 100;
+            //CityHealth.cityHealth -= 100;
         }
     }
 }

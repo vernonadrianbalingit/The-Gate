@@ -58,7 +58,7 @@ public class Projectile : MonoBehaviour{
             dmg.ApplyDamage(damage, p, n);
         }
 
-        Despawn();
+        //Despawn();
     }
 
     private bool LayerIncluded(LayerMask mask, int layer)

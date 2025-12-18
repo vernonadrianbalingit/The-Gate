@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class SpawnLogic : MonoBehaviour
@@ -12,6 +13,8 @@ public class SpawnLogic : MonoBehaviour
     public GameObject WolfPrefab;
     public GameObject BeePrefab;
     public GameObject GuardPrefab;
+
+    public GameObject EnemyCountText;
     public float spawnDelay = 2f; // Delay between each spawn in seconds
 
     // Start is called before the first frame update
@@ -24,7 +27,7 @@ public class SpawnLogic : MonoBehaviour
     void Update()
     {
         IncrementRound();
-        
+        UpdateEnemyCountUI();
     }
     // find all spwan points in the scene
     private GameObject[] FindAllSpawnPoints()
@@ -94,5 +97,11 @@ public class SpawnLogic : MonoBehaviour
             Instantiate(creaturePrefab, spawnPoint.transform.position, Quaternion.identity);
         }
 
+    }
+
+    private void UpdateEnemyCountUI()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        EnemyCountText.GetComponent<TextMeshProUGUI>().text = "Enemies Remaining: " + enemies.Length;
     }
 }

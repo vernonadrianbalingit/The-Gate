@@ -22,10 +22,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
 
         rend = GetComponentInChildren<Renderer>();
-        if (rend != null)
+        /*if (rend != null)
         {
             originalColor = rend.material.color;
-        }
+        }*/
     }
 
     public void ApplyDamage(float amount, Vector3 hitPoint, Vector3 hitNormal)
