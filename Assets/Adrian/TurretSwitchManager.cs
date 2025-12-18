@@ -79,6 +79,9 @@ public class TurretSwitchManager : MonoBehaviour
         // Ensure cursor is unlocked at start
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        // Auto-install health + healthbar + enemy contact damage on all controllable turrets
+        InstallTowerSurvivabilityComponents();
     }
 
     void Update()
@@ -360,6 +363,9 @@ public class TurretSwitchManager : MonoBehaviour
         currentControlledTurret = turretController;
         if (currentControlledTurret != null)
         {
+            // Ensure this turret can take damage + show health, even if it was spawned after Start().
+            EnsureTowerSurvivabilityOn(currentControlledTurret.gameObject);
+
             currentControlledTurret.ActivateControl();
             turretFunctionsEnabled = true;
             
@@ -486,6 +492,81 @@ public class TurretSwitchManager : MonoBehaviour
             Cursor.visible = false;
             temporarilyUnlocked = false;
         }
+    }
+
+    /// <summary>
+    /// Ensures all controllable turrets can take damage (bees) and display a health bar.
+    /// This avoids requiring prefab/scene edits in a shared project.
+    /// </summary>
+    private void InstallTowerSurvivabilityComponents()
+    {
+        int installedCount = 0;
+
+        // Primary: controllable turrets
+        FirstPersonTurretController[] turrets = FindObjectsOfType<FirstPersonTurretController>(true);
+        if (turrets != null)
+        {
+            foreach (FirstPersonTurretController turret in turrets)
+            {
+                if (turret == null)
+                    continue;
+                installedCount += EnsureTowerSurvivabilityOn(turret.gameObject);
+            }
+        }
+
+        // Secondary: any clickable turret roots (covers edge cases where controller is on a child/parent, or turrets are swapped)
+        ClickableTurret[] clickables = FindObjectsOfType<ClickableTurret>(true);
+        if (clickables != null)
+        {
+            foreach (ClickableTurret clickable in clickables)
+            {
+                if (clickable == null)
+                    continue;
+                installedCount += EnsureTowerSurvivabilityOn(clickable.gameObject);
+            }
+        }
+
+        if (showDebugLogs)
+        {
+            int turretCount = turrets != null ? turrets.Length : 0;
+            int clickableCount = clickables != null ? clickables.Length : 0;
+            Debug.Log($"TurretSwitchManager: Survivability scan complete. Found controllers={turretCount}, clickables={clickableCount}. Components added this run: {installedCount}");
+        }
+    }
+
+    private int EnsureTowerSurvivabilityOn(GameObject go)
+    {
+        if (go == null)
+            return 0;
+
+        int added = 0;
+
+        // Add in order: health first, then dependents (their Awake will auto-hook TowerHealth).
+        if (go.GetComponent<TowerHealth>() == null)
+        {
+            go.AddComponent<TowerHealth>();
+            added++;
+        }
+
+        if (go.GetComponent<WorldSpaceHealthBar>() == null)
+        {
+            go.AddComponent<WorldSpaceHealthBar>();
+            added++;
+        }
+
+        TowerEnemyContactDamage dmg = go.GetComponent<TowerEnemyContactDamage>();
+        if (dmg == null)
+        {
+            dmg = go.AddComponent<TowerEnemyContactDamage>();
+            added++;
+        }
+
+        // Ensure it points at the root TowerHealth (so it still works if colliders are on child objects).
+        TowerHealth health = go.GetComponent<TowerHealth>();
+        if (health != null && dmg != null)
+            dmg.SetTowerHealth(health);
+
+        return added;
     }
 }
 
