@@ -8,28 +8,26 @@ public class SpawnLogic : MonoBehaviour
 {
     public int currentRound = 1;
     private GameObject[] spawnPoints;
-    private bool isSpawning = false; // Track if currently spawning
+    private bool isSpawning = false; 
 
     public GameObject WolfPrefab;
     public GameObject BeePrefab;
     public GameObject GuardPrefab;
 
     public GameObject EnemyCountText;
-    public float spawnDelay = 2f; // Delay between each spawn in seconds
+    public float spawnDelay = 2f; 
 
-    // Start is called before the first frame update
     void Start()
     {
         spawnPoints = FindAllSpawnPoints();
     }
 
-    // Update is called once per frame
     void Update()
     {
         IncrementRound();
         UpdateEnemyCountUI();
     }
-    // find all spwan points in the scene
+  
     private GameObject[] FindAllSpawnPoints()
     {
         GameObject[] landSpawners = GameObject.FindGameObjectsWithTag("LandSpawner");
@@ -50,7 +48,7 @@ public class SpawnLogic : MonoBehaviour
 
     private bool CreaturesInPlay()
     {
-        // check if there are any creatures in play
+   
         GameObject[] creatures = GameObject.FindGameObjectsWithTag("Enemy");
         return creatures.Length > 0;
     }
@@ -58,40 +56,39 @@ public class SpawnLogic : MonoBehaviour
     private IEnumerator SpawnCreaturesForCurrentRound()
     {
         isSpawning = true;
-        int creaturesToSpawn = currentRound * 3; // increase the number of creatures each round
+        int creaturesToSpawn = currentRound * 3; 
         for (int i = 0; i < creaturesToSpawn; i++)
         {
             SpawnCreatureAtRandomPoint();
-            yield return new WaitForSeconds(spawnDelay); // Wait between spawns
+            yield return new WaitForSeconds(spawnDelay); 
         }
         isSpawning = false;
     }
 
     private void SpawnCreatureAtRandomPoint()
     {
-        // Select a random spawn point
+ 
         int randomIndex = Random.Range(0, spawnPoints.Length);
         GameObject spawnPoint = spawnPoints[randomIndex];
 
-        // Determine creature type based on spawn point tag
+   
         GameObject creaturePrefab = null;
         if (spawnPoint.CompareTag("LandSpawner"))
         {
             if (Random.Range(0, 2) == 0)
             {
-                creaturePrefab = WolfPrefab; // Land creature type 1
+                creaturePrefab = WolfPrefab; 
             }
             else
             {
-                creaturePrefab = GuardPrefab; // Land creature type 2
+                creaturePrefab = GuardPrefab; 
             }
         }
         else if (spawnPoint.CompareTag("AirSpawner"))
         {
-            creaturePrefab = BeePrefab; // Air creature
+            creaturePrefab = BeePrefab;
         }
 
-        // Instantiate the creature at the spawn point
         if (creaturePrefab != null)
         {
             Instantiate(creaturePrefab, spawnPoint.transform.position, Quaternion.identity);

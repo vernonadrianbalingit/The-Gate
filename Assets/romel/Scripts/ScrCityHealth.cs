@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+- Manages the health of the city
+- Updates health bar UI
+- Reloads scene when health reaches zero
+*/ 
+
 public class ScrCityHealth : MonoBehaviour
 {
     public Image healthBar;

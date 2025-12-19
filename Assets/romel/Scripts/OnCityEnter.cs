@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+- Handles city health and enemy collisions
+- Updates health bar UI
+- deletes enemy on collision
+- Reloads scene when health reaches zero
+*/
+
 public class OnCityEnter : MonoBehaviour
 {
 
@@ -28,9 +35,9 @@ public class OnCityEnter : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            cityHealthValue -= 10; // Decrease city health by 10 on collision
+            cityHealthValue -= 10;
             Debug.Log("City Health: " + cityHealthValue);
-            Destroy(collision.gameObject); // Destroy the enemy after it hits the city
+            Destroy(collision.gameObject);
         }
     }
 }

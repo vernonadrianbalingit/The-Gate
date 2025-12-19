@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+- Manages audio playback in the game
+*/
+
 public class AudioManager : MonoBehaviour
 {
     [System.Serializable]
@@ -23,7 +27,6 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        // Create AudioSource components for each sound
         foreach (Sound s in sounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();

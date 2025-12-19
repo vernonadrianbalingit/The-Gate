@@ -9,6 +9,7 @@ public class BeeController : MonoBehaviour
     - Finds closest tower and goes to it to attack
     - if no tower, it attacks the castle
     - handles animation states
+    - Corrects position when attacking tower
     */
 
     private Animator animator;
@@ -17,7 +18,6 @@ public class BeeController : MonoBehaviour
     private bool isLocked = false;
     private Vector3 lockedPosition;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -29,7 +29,6 @@ public class BeeController : MonoBehaviour
         target = FindClosestTower();
         if (target == null) return;
 
-        // Get the camera position from the tower if it exists, otherwise use tower position
         Vector3 targetPosition = target.position;
         Camera towerCamera = target.GetComponentInChildren<Camera>();
         if (towerCamera != null)
@@ -45,7 +44,6 @@ public class BeeController : MonoBehaviour
         {
             Vector3 direction = (targetPosition - transform.position).normalized;
             
-            // Only move if not locked
             if (!isLocked)
             {
                 transform.position += direction * Time.fixedDeltaTime * 2f; // Move towards the target
@@ -88,7 +86,6 @@ public class BeeController : MonoBehaviour
     }
     void Update()
     {
-        // constantly look at target
         if (target != null)
         {
             Vector3 targetPosition = target.position;

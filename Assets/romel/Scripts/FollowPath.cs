@@ -17,41 +17,13 @@ public class FollowPath : MonoBehaviour
     void Start()
     {
         wall = GameObject.FindWithTag("Wall");
-
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
-        if (agent == null)
-        {
-            Debug.LogError(name + ": FollowPath requires a NavMeshAgent component. Disabling script.");
-            enabled = false;
-            return;
-        }
-
-        if (wall == null)
-        {
-            Debug.LogWarning(name + ": 'wall' GameObject is not assigned in the inspector. Assign a target to follow.");
-        }
-        else
-        {
-            target = wall.transform;
-        }
+        target = wall.transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (target == null)
-        {
-            // Nothing to follow this frame
-            return;
-        }
-
-        // Keep the agent at the same Y as this object so it moves on the XZ plane
         position = new Vector3(target.position.x, transform.position.y, target.position.z);
-
-        if (agent == null)
-            return;
-
-        // Only set destination when agent is available
         agent.SetDestination(position);
     }
 }

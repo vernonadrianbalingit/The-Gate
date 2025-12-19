@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+- Simple Script to activate game functions on selection of first tower
+- Deletes itself after activation
+*/
+
 public class TowerToStart : MonoBehaviour
 {
     public GameObject UI;
@@ -11,16 +16,11 @@ public class TowerToStart : MonoBehaviour
     private Transform mainCamera;
     private Transform currentCamera;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if (Camera.main != null)
-        {
-            mainCamera = Camera.main.transform;
-        }
+        mainCamera = Camera.main.transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Camera.main == null)
@@ -29,6 +29,8 @@ public class TowerToStart : MonoBehaviour
         }
         
         currentCamera = Camera.main.transform;
+
+        // checks if the current camera is different from the main camera
         if (currentCamera != mainCamera && mainCamera != null)
         {
             UI.SetActive(true);
