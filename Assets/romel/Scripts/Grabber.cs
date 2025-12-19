@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+- Grabber functions for spawning turrets and placing them
+- Transforms turrets to cursor position when grabbed
+- checks valid placement on stand
+- refunds money based on cancellation or destruction
+*/
+
 public class Grabber : MonoBehaviour
 {   
     public GameObject GameCurrencyObject;
@@ -9,7 +16,7 @@ public class Grabber : MonoBehaviour
     private GameCurrency gameCurrency;
     private MonoBehaviour currentTurretScript;
 
-    private int price = -1;
+    private int price = -1; // null price
     void Start()
     {
         if (GameCurrencyObject != null)
@@ -34,8 +41,11 @@ public class Grabber : MonoBehaviour
                 if (CheckValidPlacement(closestStand))
                 {
                     grabbed.transform.position = closestStand.transform.position;
+
+                    // sets postion equal to the closest stand and sets predetermined y position
                     grabbed.transform.position = new Vector3(grabbed.transform.position.x, 2.88f, grabbed.transform.position.z);
                     
+                    // enables turret functions when placed
                     if (currentTurretScript != null)
                     {
                         currentTurretScript.enabled = true;
@@ -48,6 +58,7 @@ public class Grabber : MonoBehaviour
             }
         }
         
+        // refunds money and destroys grabbed turret when menu is toggled while still placing turret
         if (Input.GetKeyDown(KeyCode.Tab) && grabbed != null)
         {
             if (gameCurrency != null)
@@ -60,6 +71,7 @@ public class Grabber : MonoBehaviour
             Cursor.visible = true;
         }
 
+        //right click to cancel placement or destroy turret
         if (Input.GetMouseButtonDown(1))
         {
             if (grabbed != null)
@@ -108,6 +120,7 @@ public class Grabber : MonoBehaviour
             }
         }
         
+        // moves grabbed turret to cursor position
         if (grabbed != null)
         {   
             GameObject closestStand = GetClosestStand(grabbed);
@@ -151,6 +164,7 @@ public class Grabber : MonoBehaviour
 
     private bool CheckValidPlacement(GameObject stand)
     {
+        // find sections of stand and camera for valid placement
         GameObject StandSection = GetGrandestParent(stand);
         GameObject CameraSection = GetGrandestParent(GetCurrentCamera().gameObject);
 
@@ -184,11 +198,6 @@ public class Grabber : MonoBehaviour
 
     public void SpawnPrefabAtCursor(GameObject prefab, int turretPrice)
     {
-        if (prefab == null)
-        {
-            return;
-        }
-
         // Get the mouse position in world space
         Camera cam = GetCurrentCamera();
         Vector3 ScreenMousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane + 10f);
@@ -215,6 +224,7 @@ public class Grabber : MonoBehaviour
         else if (sniper != null)
             currentTurretScript = sniper;
 
+        // disable turret functions while placing
         if (currentTurretScript != null)
         {
             currentTurretScript.enabled = false;

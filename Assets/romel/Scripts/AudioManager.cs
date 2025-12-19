@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-- Manages audio playback in the game
+- menu for managing and playing audio clips
+- for audio with no source objects
 */
 
 public class AudioManager : MonoBehaviour

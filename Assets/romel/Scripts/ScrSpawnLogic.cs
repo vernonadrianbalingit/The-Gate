@@ -4,6 +4,12 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
+/*
+- Manages enemy spawning logic
+- Increases enemy count each round
+- Spawns enemies at random spawn points
+*/
+
 public class SpawnLogic : MonoBehaviour
 {
     public int currentRound = 1;
@@ -53,6 +59,7 @@ public class SpawnLogic : MonoBehaviour
         return creatures.Length > 0;
     }
 
+    // spawn enemy with delay between each spawn
     private IEnumerator SpawnCreaturesForCurrentRound()
     {
         isSpawning = true;
@@ -65,6 +72,7 @@ public class SpawnLogic : MonoBehaviour
         isSpawning = false;
     }
 
+    // spawns a random creature at a random spawn point 
     private void SpawnCreatureAtRandomPoint()
     {
  
@@ -96,6 +104,7 @@ public class SpawnLogic : MonoBehaviour
 
     }
 
+    // updates enemy count UI text
     private void UpdateEnemyCountUI()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
