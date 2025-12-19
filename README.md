@@ -1,5 +1,7 @@
 # The Gate!
 
+## Main game is under ./Assets/0-romel-MAIN-GAME
+
 ## Group Members
 
 - Josue Favela-Pacheco
