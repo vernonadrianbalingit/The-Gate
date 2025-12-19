@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 544738443696155688}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 1667618383129314823}
   - component: {fileID: 548497393876390162}
   - component: {fileID: 8195803079975076596}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Turrent Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1384810875482659589}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Camera Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,6 +175,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Adrian Prefab Turret (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6340655784525394071, guid: d3560f9486cf4b3239610d651d2c8e01, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6510530659711467349, guid: d3560f9486cf4b3239610d651d2c8e01, type: 3}
       propertyPath: m_LocalPosition.x
       value: 28.6
@@ -215,6 +219,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7312655604777729424, guid: d3560f9486cf4b3239610d651d2c8e01, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -237,6 +245,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6340655784525394071, guid: d3560f9486cf4b3239610d651d2c8e01, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4020636216289799384}
+    - targetCorrespondingSourceObject: {fileID: 6340655784525394071, guid: d3560f9486cf4b3239610d651d2c8e01, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -850592726016276038}
   m_SourcePrefab: {fileID: 100100000, guid: d3560f9486cf4b3239610d651d2c8e01, type: 3}
 --- !u!4 &2004926210355051183 stripped
 Transform:
@@ -326,3 +337,24 @@ MonoBehaviour:
   projectileDamage: 10
   maxRange: 1000
   debugMode: 0
+--- !u!135 &-850592726016276038
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767805472081298814}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3.5
+  m_Center: {x: 0.03464973, y: 3.5, z: 0.03234589}

@@ -179,13 +179,7 @@ public class AdrianTowerRuntimeInstaller : MonoBehaviour
         if (dmg == null)
         {
             dmg = go.AddComponent<TowerEnemyContactDamage>();
-            dmg.SetTowerHealth(health);
             added++;
-        }
-        else if (health != null)
-        {
-            // Ensure it points at the tower's health (in case it was added to a child collider).
-            dmg.SetTowerHealth(health);
         }
 
         if (debugLogs && added > 0)

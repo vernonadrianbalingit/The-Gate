@@ -58,7 +58,7 @@ public class SpawnLogic : MonoBehaviour
     private IEnumerator SpawnCreaturesForCurrentRound()
     {
         isSpawning = true;
-        int creaturesToSpawn = currentRound * 2; // increase the number of creatures each round
+        int creaturesToSpawn = currentRound * 3; // increase the number of creatures each round
         for (int i = 0; i < creaturesToSpawn; i++)
         {
             SpawnCreatureAtRandomPoint();

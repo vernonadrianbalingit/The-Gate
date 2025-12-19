@@ -160,12 +160,7 @@ public class AdrianTowerSetupInScene : MonoBehaviour
         if (dmg == null)
         {
             dmg = go.AddComponent<TowerEnemyContactDamage>();
-            dmg.SetTowerHealth(health);
             added++;
-        }
-        else
-        {
-            dmg.SetTowerHealth(health);
         }
 
         if (debugLogs && added > 0)

@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class Grabber : MonoBehaviour
 {   
-    
+    public GameObject GameCurrencyObject;
     private GameObject grabbed = null;
-    private GameObject lockedStand = null;
+    private GameCurrency gameCurrency;
+    private MonoBehaviour currentTurretScript;
 
+    private int price = -1;
+    void Start()
+    {
+        if (GameCurrencyObject != null)
+        {
+            gameCurrency = GameCurrencyObject.GetComponent<GameCurrency>();
+        }
+    }
 
-    private Camera GetCurrentCamera()
+    public Camera GetCurrentCamera()
     {
         return Camera.current != null ? Camera.current : Camera.main;
     }
@@ -19,28 +28,7 @@ public class Grabber : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hit = CastRay();
-
-            if (hit.collider != null && grabbed == null && hit.collider.gameObject.CompareTag("Turret"))
-            {
-                Debug.Log("Grabbed Turret");
-                grabbed = hit.collider.gameObject;
-                if (GetGrandestParent(GetClosestStand(grabbed)) == GetGrandestParent(GetCurrentCamera().gameObject))
-                {
-                    Cursor.visible = false;
-                    StandInUse standInUse = GetClosestStand(grabbed).GetComponent<StandInUse>();
-
-                    if (standInUse != null)
-                    {
-                        standInUse.SetInUse(false);
-                    }
-                }
-                else
-                {
-                    grabbed = null;
-                }
-            }
-            else if (grabbed != null)
+            if (grabbed != null)
             {
                 // Place on the closest stand
                 GameObject closestStand = GetClosestStand(grabbed);
@@ -49,6 +37,14 @@ public class Grabber : MonoBehaviour
                 {
                     grabbed.transform.position = closestStand.transform.position;
                     grabbed.transform.position = new Vector3(grabbed.transform.position.x, 2.88f, grabbed.transform.position.z);
+                    
+                    // Re-enable the turret script when placing
+                    if (currentTurretScript != null)
+                    {
+                        currentTurretScript.enabled = true;
+                        currentTurretScript = null;
+                    }
+                    
                     grabbed = null;
                     Cursor.visible = true;
                 }
@@ -59,6 +55,12 @@ public class Grabber : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab) && grabbed != null)
         {
             Debug.Log("Destroyed turret in hand (Tab): " + grabbed.name);
+            if (gameCurrency != null)
+            {
+                gameCurrency.AddMoney(price);
+                Debug.Log("Refunded 1 dollar");
+            }
+            currentTurretScript = null;
             Destroy(grabbed);
             grabbed = null;
             Cursor.visible = true;
@@ -71,7 +73,10 @@ public class Grabber : MonoBehaviour
             if (grabbed != null)
             {
                 Debug.Log("Destroyed turret in hand: " + grabbed.name);
+                currentTurretScript = null;
+                gameCurrency.AddMoney(price);
                 Destroy(grabbed);
+                price = -1;
                 grabbed = null;
                 Cursor.visible = true;
             }
@@ -109,6 +114,11 @@ public class Grabber : MonoBehaviour
                             }
                             
                             Debug.Log("Destroyed turret: " + turretToDestroy.name);
+                            if (gameCurrency != null)
+                            {
+                                gameCurrency.AddMoney(1);
+                                Debug.Log("Refunded 1 dollar");
+                            }
                             Destroy(turretToDestroy);
                         }
                         else
@@ -202,11 +212,7 @@ public class Grabber : MonoBehaviour
         return current.gameObject;
     }
 
-    /// <summary>
-    /// Spawns a prefab at the mouse cursor position and allows it to be grabbed
-    /// </summary>
-    /// <param name="prefab">The prefab to spawn</param>
-    public void SpawnPrefabAtCursor(GameObject prefab)
+    public void SpawnPrefabAtCursor(GameObject prefab, int turretPrice)
     {
         if (prefab == null)
         {
@@ -226,6 +232,29 @@ public class Grabber : MonoBehaviour
         grabbed = spawnedObject;
         Cursor.visible = false;
 
-        Debug.Log($"Spawned {prefab.name} at cursor position");
+        price = turretPrice;
+
+        // Get connected script of turret - check all possible turret controller types
+        currentTurretScript = grabbed.GetComponent<MonoBehaviour>();
+        
+        // Try to find the specific turret controller component
+        var rapidFire = grabbed.GetComponent("RapidFireTurretController") as MonoBehaviour;
+        var normal = grabbed.GetComponent("TurretController") as MonoBehaviour;
+        var sniper = grabbed.GetComponent("SniperTurretController") as MonoBehaviour;
+        
+        if (rapidFire != null)
+            currentTurretScript = rapidFire;
+        else if (normal != null)
+            currentTurretScript = normal;
+        else if (sniper != null)
+            currentTurretScript = sniper;
+
+        if (currentTurretScript != null)
+        {
+            currentTurretScript.enabled = false;
+            Debug.Log($"Disabled turret script: {currentTurretScript.GetType().Name}");
+        }
+
+        currentTurretScript.enabled = false;
     }
 }

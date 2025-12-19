@@ -143,7 +143,6 @@ GameObject:
   - component: {fileID: 942221617788013047}
   - component: {fileID: -5263147274806910215}
   - component: {fileID: 3297182071240540786}
-  - component: {fileID: -6201596437818454198}
   - component: {fileID: -5183586726475199558}
   m_Layer: 0
   m_Name: Forest Wolf - Blue
@@ -331,27 +330,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0.7, z: 0}
---- !u!65 &-6201596437818454198
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508831353932797061}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!82 &-5183586726475199558
 AudioSource:
   m_ObjectHideFlags: 0
@@ -364,7 +342,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 99ee8beca2fd77a48aa11d9953d1c528, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
   Mute: 0

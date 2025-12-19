@@ -86,7 +86,7 @@ public class ShopUI : MonoBehaviour
         {
             Debug.Log($"Bought {item.itemName} for {item.price}");
             // later: spawn or place your tower here
-            grabberScript.GetComponent<Grabber>().SpawnPrefabAtCursor(item.turretPrefab);
+            grabberScript.GetComponent<Grabber>().SpawnPrefabAtCursor(item.turretPrefab, item.price);
         }
         else
         {

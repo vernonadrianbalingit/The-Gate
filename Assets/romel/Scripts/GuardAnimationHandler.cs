@@ -59,7 +59,7 @@ public class GuardAnimationHandler : MonoBehaviour
     {
         if (other.CompareTag("Wall"))
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
     }
 }

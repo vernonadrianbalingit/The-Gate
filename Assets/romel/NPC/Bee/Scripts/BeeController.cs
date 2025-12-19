@@ -14,6 +14,8 @@ public class BeeController : MonoBehaviour
     private Animator animator;
 
     private Transform target;
+    private bool isLocked = false;
+    private Vector3 lockedPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -24,11 +26,30 @@ public class BeeController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (target != null && Vector3.Distance(transform.position, target.position + Vector3.up * 5f) >= 5f)
+        target = FindClosestTower();
+        if (target == null) return;
+
+        // Get the camera position from the tower if it exists, otherwise use tower position
+        Vector3 targetPosition = target.position;
+        Camera towerCamera = target.GetComponentInChildren<Camera>();
+        if (towerCamera != null)
         {
-            Vector3 targetPosition = target.position + Vector3.up * 5f;
+            targetPosition = towerCamera.transform.position + Vector3.up * -2f;
+        }
+        else
+        {
+            targetPosition = target.position + Vector3.up * -2f;
+        }
+
+        if (target != null && Vector3.Distance(transform.position, targetPosition) >= 3f)
+        {
             Vector3 direction = (targetPosition - transform.position).normalized;
-            transform.position += direction * Time.fixedDeltaTime * 2f; // Move towards the target
+            
+            // Only move if not locked
+            if (!isLocked)
+            {
+                transform.position += direction * Time.fixedDeltaTime * 2f; // Move towards the target
+            }
 
             animator.SetBool("Fly Forward", true);
         }
@@ -37,14 +58,27 @@ public class BeeController : MonoBehaviour
             animator.SetBool("Fly Forward", false);
         }
 
-        if (Vector3.Distance(transform.position, target.position + Vector3.up * 5f) < 5f)
+        if (Vector3.Distance(transform.position, targetPosition) < 3f)
         {
+            // Lock position when in attack range
+            if (!isLocked)
+            {
+                isLocked = true;
+                lockedPosition = transform.position;
+            }
+            
+            // Keep bee at locked position
+            transform.position = lockedPosition;
+            
             // Attack logic here
             animator.SetBool("Sting Attack", true);
             animator.SetBool("Fly Forward", false);
         }
         else
         {
+            // Unlock when out of range
+            isLocked = false;
+            
             animator.SetBool("Sting Attack", false);
             if (target != null)
             {
@@ -57,7 +91,17 @@ public class BeeController : MonoBehaviour
         // constantly look at target
         if (target != null)
         {
-            Vector3 targetPosition = target.position + Vector3.up * 5f;
+            Vector3 targetPosition = target.position;
+            Camera towerCamera = target.GetComponentInChildren<Camera>();
+            if (towerCamera != null)
+            {
+                targetPosition = towerCamera.transform.position + Vector3.up * -2f;
+            }
+            else
+            {
+                targetPosition = target.position + Vector3.up * -2f;
+            }
+            
             Vector3 direction = (targetPosition - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);

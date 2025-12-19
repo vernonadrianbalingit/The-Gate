@@ -62,8 +62,8 @@ public class WolfAnimationController : MonoBehaviour
     {
         if (other.CompareTag("Wall"))
         {
-            Destroy(gameObject);
-            ScrCityHealth CityHealth = CityHealthObject.GetComponent<ScrCityHealth>();
+            //Destroy(gameObject);
+            //ScrCityHealth CityHealth = CityHealthObject.GetComponent<ScrCityHealth>();
             //CityHealth.cityHealth -= 100;
         }
     }

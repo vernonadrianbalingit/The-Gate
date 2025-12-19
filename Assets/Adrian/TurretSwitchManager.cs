@@ -15,11 +15,14 @@ public class TurretSwitchManager : MonoBehaviour
     [SerializeField] private bool useRightClickToSwitch = true; // Use right-click to switch when controlling a turret (left-click is for shooting)
     [SerializeField] private bool showDebugLogs = true; // Show debug messages in console
 
+
     private FirstPersonTurretController currentControlledTurret = null;
-    private Camera mainCamera; // Camera used for raycasting when not in a turret
+    public Camera mainCamera; // Camera used for raycasting when not in a turret
     private ClickableTurret hoveredTurret = null;
     private bool temporarilyUnlocked = false; // Track if cursor was temporarily unlocked
     private bool turretFunctionsEnabled = false; // Track if turret functions are currently enabled
+
+    public Camera fallbackCamera; // Fallback camera if Main Camera is not found
 
     public GameObject TurretManager; // Turret manager for turret placements reference
 
@@ -423,6 +426,13 @@ public class TurretSwitchManager : MonoBehaviour
                 if (turretCam != null)
                 {
                     turretCam.enabled = true;
+                    
+                    // Re-enable turret's audio listener since we're still using the turret camera
+                    AudioListener turretListener = turretCam.GetComponent<AudioListener>();
+                    if (turretListener != null)
+                    {
+                        turretListener.enabled = true;
+                    }
                 }
                 
                 // Enable Grabber script when turret functions are disabled
@@ -453,9 +463,12 @@ public class TurretSwitchManager : MonoBehaviour
     {
         if (currentControlledTurret != null)
         {
+            
             currentControlledTurret.DeactivateControl();
             currentControlledTurret = null;
             turretFunctionsEnabled = false;
+            fallbackCamera.enabled = true; 
+            mainCamera = fallbackCamera; 
         }
 
         // Unlock cursor
@@ -561,12 +574,6 @@ public class TurretSwitchManager : MonoBehaviour
             added++;
         }
 
-        // Ensure it points at the root TowerHealth (so it still works if colliders are on child objects).
-        TowerHealth health = go.GetComponent<TowerHealth>();
-        if (health != null && dmg != null)
-            dmg.SetTowerHealth(health);
-
         return added;
     }
 }
-
